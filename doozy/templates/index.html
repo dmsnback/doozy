@@ -1,14 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <title>Главная | Doozy</title>
-</head>
-<body>
-    <h1>Задачи</h1>
+  </head>
+  <body>
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="{% url 'tasks:index' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">doozy</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a href="{% url 'tasks:index' %}" class="nav-link active" aria-current="page">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Создать задачу</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Мои задачи</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">О проекте</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Прифиль - {{ user.username }}</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Выйти</a>
+        </li>
+      </ul>
+    </header>
+    <h1>Активные задачи
+    </h1>
     {% for task in tasks %}
-    <ul>
+      <ul>
         <li>{{ task.title }}</li>
         <li>{{ task.comment }}</li>
         <li>{{ task.completed }}</li>
@@ -16,7 +48,8 @@
         <li>{{ task.finish_at }}</li>
         <li>{{ task.prioroty }}</li>
         <li>{{ task.author }}</li>
-    </ul>
+      </ul>
+      <hr />
     {% endfor %}
-</body>
+  </body>
 </html>
