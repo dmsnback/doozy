@@ -46,6 +46,8 @@ class Task(models.Model):
     )
     finish_at = models.DateTimeField(
         'Срок выполнения задачи',
+        blank=True,
+        null=True,
         help_text='Укажите срок выполнения задачи'
     )
     prioroty = models.ForeignKey(

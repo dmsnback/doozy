@@ -1,17 +1,20 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    {% comment %} <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" /> {% endcomment %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
     <title>Добавить задачу</title>
   </head>
   <body>
     <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
       <a href="{% url 'tasks:index' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
         <svg class="bi me-2" width="40" height="32">
-          <use xlink:href="#bootstrap"></use>
+          <img src="{% static 'img/logo-doozy.png' %}" width="25" height="25" alt="Логотип doozy">
         </svg>
         <span class="fs-4">doozy</span>
       </a>
@@ -37,11 +40,19 @@
         </li>
       </ul>
     </header>
-    <h1>Создать задачу
-    </h1>
-    <form action="">
-        {{ form }}
-        <input type="submit" value="Создать">
-    </form>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="card col-6">
+          <div class="card-header">Создать задачу</div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+              {% bootstrap_button button_type='submit' content='Создать' %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
