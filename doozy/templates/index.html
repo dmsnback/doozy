@@ -49,6 +49,10 @@
         <li>{{ task.prioroty }}</li>
         <li>{{ task.author }}</li>
       </ul>
+      <div>
+        <a href="{% url 'tasks:edit' task.id %}">Изменить</a>
+        <a href="{% url 'tasks:delete' task.id %}">Удалить</a>
+      </div>
       <hr />
     {% endfor %}
   </body>
