@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  {% if '/edit/' in request.path %}
+    <title>Редактировать задачу</title>
+  {% elif '/delete/' in request.path %}
+    <title>Удалить задачу</title>
+  {% else %}
+    <title>Создать задачу</title>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="card col-6">
+        {% if '/edit/' in request.path %}
+          <div class="card-header">Редактировать задачу</div>
+        {% elif '/delete/' in request.path %}
+          <div class="card-header">Удалить задачу</div>
+        {% else %}
+          <div class="card-header">Создать задачу</div>
+        {% endif %}
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {% if not '/delete/' in request.path %}
+              {% bootstrap_form form %}
+              {% bootstrap_button button_type='submit' content='Создать' %}
+            {% else %}
+              <p>{{ form.instance.title }}</p>
+              {% bootstrap_button button_type='submit' content='Удалить' %}
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

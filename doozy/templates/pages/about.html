@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+  <title>О проекте | doozy</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header">О проекте</div>
+      <div class="card-body">
+        <h5 class="card-title">Doozy</h5>
+        <p class="card-text">Doozy — это удобное место, где можно хранить свои задачи и планы. Оно создано, чтобы помогать упорядочивать дела и двигаться к целям без лишней суеты.</p>
+        <a href="{% url 'tasks:index' %}" class="btn btn-primary">На главную</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

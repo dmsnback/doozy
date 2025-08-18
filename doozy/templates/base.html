@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'img/favicons/favicon.ico' %}" />
+    <link rel="icon" href="{% static 'img/favicons/favicon.svg' %}" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="{% static 'img/favicons/favicon.png' %}" />
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% block title %}
+    <title>Doozy</title>
+    {% endblock title %}
+    
+  </head>
+  <body>
+    {% include "includes/header.html"%}
+    {% block content %}
+    <h2>Здесь пока что ничего нет :(</h2>
+    {% endblock content %}
+  </body>
+</html>
