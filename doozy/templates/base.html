@@ -9,16 +9,16 @@
     <link rel="apple-touch-icon" href="{% static 'img/favicons/favicon.png' %}" />
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     {% bootstrap_javascript %}
     {% block title %}
-    <title>Doozy</title>
-    {% endblock title %}
-    
+      <title>Doozy</title>
+    {% endblock %}
   </head>
   <body>
-    {% include "includes/header.html"%}
+    {% include 'includes/header.html' %}
     {% block content %}
-    <h2>Здесь пока что ничего нет :(</h2>
-    {% endblock content %}
+      <h2>Здесь пока что ничего нет :(</h2>
+    {% endblock %}
   </body>
 </html>
