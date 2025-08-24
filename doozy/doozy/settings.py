@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks.apps.TasksConfig',
     'pages.apps.PagesConfig',
+    'user.apps.UserConfig',
     'django_bootstrap5',
 ]
 
