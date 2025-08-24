@@ -5,38 +5,44 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="card col-6">
-        <div class="card-header">Активные задачи</div>
-        {% for task in tasks %}
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox" />
-                {{ task.title }}
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                  <div class="text-left">
-                    <p>Приоритет: {{ task.prioroty }}</p>
-                  </div>
-                </button>
-              </h2>
-              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                  <p>{{ task.comment }}</p>
-                  <p>Создана: {{ task.created_at }}</p>
-                  <p>Выполнить до: {{ task.finish_at }}</p>
-                  <p>Статус: {{ task.completed }}</p>
-                  <div>
-                    <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:edit' task.id %}">Изменить</a>
-                    <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:delete' task.id %}">Удалить</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+  {% if user.is_authenticated %}
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="card col-6">
+          <div class="card-header">Активные задачи</div>
+          <div class="card text-center">
+            <a href="{% url 'tasks:create' %}" class="btn btn-dark">Добавить новую задачу</a>
           </div>
-        {% endfor %}
+
+          {% for task in tasks %}
+            {% if task.author == user %}
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched" />
+                  <label class="form-check-label stretched-link" for="firstCheckboxStretched"><h5>{{ task.title }}</h5></label>
+                  <p>Приоритет: {{ task.prioroty }}</p>
+                </li>
+                <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:edit' task.id %}">Изменить</a>
+                <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:delete' task.id %}">Удалить</a>
+                
+              </ul>
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
+  {% else %}
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="card text-center">
+          <h5 class="card-header">Doozy</h5>
+          <div class="card-body">
+            <p class="card-text">Для того, чтобы добавить задачу войдите или зарегистрируйтесь.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+            <a href="{% url 'registration' %}" class="btn btn-outline-primary">Регистрация</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
