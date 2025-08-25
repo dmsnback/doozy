@@ -7,8 +7,9 @@ from tasks.models import Task
 
 def index(request):
     template_name = 'tasks/index.html'
-    tasks = Task.objects.all()
+    tasks = Task.objects.select_related('author').filter(completed=False)
     context = {'tasks': tasks}
+    print(tasks)
     return render(request, template_name, context)
 
 
@@ -46,4 +47,12 @@ def task_delete(request, pk):
     if request.method == 'POST':
         instance.delete()
         return redirect('tasks:index')
+    return render(request, template_name, context)
+
+
+@login_required
+def task_list(request):
+    template_name = 'tasks/task_list.html'
+    task_list = Task.objects.all()
+    context = {'task_list': task_list}
     return render(request, template_name, context)
