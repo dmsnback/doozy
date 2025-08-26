@@ -15,12 +15,12 @@
           </div>
 
           {% for task in task_list %}
-            {% if task.author == user %}
+            {% if task.author__username == user.username %}
               <ul class="list-group">
                 <li class="list-group-item">
                   <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched" />
                   <label class="form-check-label stretched-link" for="firstCheckboxStretched"><h5>{{ task.title }}</h5></label>
-                  <p>Приоритет: {{ task.prioroty }}</p>
+                  <p>Приоритет: {{ task.priority__title }}</p>
                 </li>
                 <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:edit' task.id %}">Изменить</a>
                 <a class="btn btn-outline-dark" role="button" href="{% url 'tasks:delete' task.id %}">Удалить</a>

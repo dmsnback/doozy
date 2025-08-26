@@ -50,7 +50,7 @@ class Task(models.Model):
         null=True,
         help_text='Укажите срок выполнения задачи'
     )
-    prioroty = models.ForeignKey(
+    priority = models.ForeignKey(
         PriorityTask,
         on_delete=models.SET_NULL,
         null=True,
@@ -63,14 +63,14 @@ class Task(models.Model):
         User,
         on_delete=models.CASCADE,
         null=True,
-        related_name='tasks',
+        related_name='author',
         verbose_name='Пользователь'
     )
 
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def __str__(self):
         return self.title
