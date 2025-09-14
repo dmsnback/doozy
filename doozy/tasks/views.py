@@ -7,11 +7,17 @@ from tasks.models import Task
 
 def index(request):
     template_name = 'tasks/index.html'
-    tasks = Task.objects.values(
-        'id', 'title', 'priority__title', 'author__username',
-    ).filter(completed=False)
+    tasks = Task.objects.select_related('author').filter(completed=False)
     context = {'tasks': tasks}
     return render(request, template_name, context)
+
+
+@login_required
+def toggle_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.completed = not task.completed
+    task.save()
+    return redirect('tasks:index')
 
 
 @login_required
