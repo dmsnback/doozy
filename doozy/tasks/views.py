@@ -60,8 +60,8 @@ def task_delete(request, pk):
 @login_required
 def task_list(request):
     template_name = 'tasks/task_list.html'
-    task_list = Task.objects.values(
-        'id', 'title', 'priority__title', 'author__username'
+    task_list = Task.objects.select_related(
+        'author'
     ).order_by('completed', '-created_at')
     context = {'task_list': task_list}
     return render(request, template_name, context)
