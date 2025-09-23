@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
 from tasks.forms import TaskForm
@@ -17,7 +18,7 @@ def toggle_task(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.completed = not task.completed
     task.save()
-    return redirect('tasks:index')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -47,14 +48,10 @@ def task_edit(request, pk):
 
 @login_required
 def task_delete(request, pk):
-    template_name = 'tasks/create_task.html'
-    instance = get_object_or_404(Task, pk=pk)
-    form = TaskForm(instance=instance)
-    context = {'form': form}
     if request.method == 'POST':
+        instance = get_object_or_404(Task, pk=pk)
         instance.delete()
-        return redirect('tasks:index')
-    return render(request, template_name, context)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required

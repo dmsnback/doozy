@@ -34,8 +34,12 @@
                             </span>
                         </form>
                         <div>
-                          <a href="{% url 'tasks:edit' task.id %}" class="btn btn-sm btn-outline-gray">✏️</a>
-                          <a href="{% url 'tasks:delete' task.id %}" class="btn btn-sm btn-outline-danger">X</a>
+                          <a href="{% url 'tasks:edit' task.id %}" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">✏️</a>
+                          <form method="post" action="{% url 'tasks:delete' task.id %}" class="d-inline">
+                            {% csrf_token %}
+                          <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">X</button>
+                          </form>
+                          <a href="#" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Подробнее">➡️</a>
                         </div>
                     </li>
                     {% endif %}
