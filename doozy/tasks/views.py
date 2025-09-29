@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -9,7 +10,10 @@ from tasks.models import Task
 def index(request):
     template_name = 'tasks/index.html'
     tasks = Task.objects.select_related('author').filter(completed=False)
-    context = {'tasks': tasks}
+    paginator = Paginator(tasks, 7)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
     return render(request, template_name, context)
 
 
@@ -60,5 +64,8 @@ def task_list(request):
     task_list = Task.objects.select_related(
         'author'
     ).order_by('completed', '-created_at')
-    context = {'task_list': task_list}
+    paginator = Paginator(task_list, 7)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'page_obj': page_obj}
     return render(request, template_name, context)

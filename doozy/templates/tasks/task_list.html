@@ -23,7 +23,7 @@
                 <br>
             <!-- список задач -->
             <ul class="list-group">
-                {% for task in task_list %}
+                {% for task in page_obj %}
                 {% if task.author == user %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                       <form method="post" action="{% url 'tasks:toggle_task' task.id %}" class="d-flex align-items-center">
@@ -47,6 +47,9 @@
             </ul>
         </div>
     </div>
+</div>
+<div class="container d-flex justify-content-center mt-5">
+  {% include 'includes/paginator.html' %}
 </div>
   {% endif %}
 {% endblock %}

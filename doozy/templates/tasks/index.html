@@ -1,50 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block title %}
-  <title>Главная | doozy</title>
+<title>Главная | doozy</title>
 {% endblock %}
 
 {% block content %}
-  {% if user.is_authenticated %}
-    <div class="container d-flex justify-content-center mt-5">
-      <div class="card shadow-sm" style="width: 28rem;">
-        <div class="card-body">
-          <h4 class="card-title mb-3 text-center">📝 Активные задачи</h4>
-          <!-- форма добавления задачи -->
-          <form class="input-group mb-3" method="post" action="{% url 'tasks:create' %}">
+{% if user.is_authenticated %}
+<div class="container d-flex justify-content-center mt-5">
+  <div class="card shadow-sm" style="width: 28rem;">
+    <div class="card-body">
+      <h4 class="card-title mb-3 text-center">📝 Активные задачи</h4>
+      <!-- форма добавления задачи -->
+      <form class="input-group mb-3" method="post" action="{% url 'tasks:create' %}">
+        {% csrf_token %}
+        <input type="text" name="title" class="form-control" placeholder="Новая задача" required />
+        <button class="btn btn-outline-secondary" type="submit">Добавить</button>
+      </form>
+      <div>
+        <a class="btn btn-outline-secondary" href="{% url 'tasks:create' %}">Добавить c параметрами</a>
+      </div>
+      <br />
+      <!-- список задач -->
+      <ul class="list-group">
+        {% for task in page_obj %}
+        {% if task.author == user %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <form method="post" action="{% url 'tasks:toggle_task' task.id %}" class="d-flex align-items-center">
             {% csrf_token %}
-            <input type="text" name="title" class="form-control" placeholder="Новая задача" required />
-            <button class="btn btn-outline-secondary" type="submit">Добавить</button>
+            <input class="form-check-input me-2" type="checkbox" onchange="this.form.submit()"  {% if task.completed %}checked{% endif %}>
+            <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">{{ task.title }}</span>
           </form>
           <div>
-            <a class="btn btn-outline-secondary" href="{% url 'tasks:create' %}">Добавить c параметрами</a>
+            <a href="{% url 'tasks:edit' task.id %}" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">✏️</a>
+            <form method="post" action="{% url 'tasks:delete' task.id %}" class="d-inline">
+              {% csrf_token %}
+              <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">X</button>
+            </form>
+            <a href="#" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Подробнее">➡️</a>
           </div>
-          <br />
-          <!-- список задач -->
-          <ul class="list-group">
-            {% for task in tasks %}
-              {% if task.author == user %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <form method="post" action="{% url 'tasks:toggle_task' task.id %}" class="d-flex align-items-center">
-                    {% csrf_token %}
-                    <input class="form-check-input me-2" type="checkbox" onchange="this.form.submit()"  {% if task.completed %}checked{% endif %}>
-                    <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">{{ task.title }}</span>
-                  </form>
-                  <div>
-                    <a href="{% url 'tasks:edit' task.id %}" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">✏️</a>
-                    <form method="post" action="{% url 'tasks:delete' task.id %}" class="d-inline">
-                      {% csrf_token %}
-                      <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">X</button>
-                    </form>
-                    <a href="#" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Подробнее">➡️</a>
-                  </div>
-                </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
     </div>
-  {% endif %}
+  </div>
+</div>
+<div class="container d-flex justify-content-center mt-5">
+  {% include 'includes/paginator.html' %}
+</div>
+{% else %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <svg class="bi mt-4 mb-3" width="100" height="100">
+      <img src="{% static 'img/logo-doozy.png' %}" width="35" height="35" alt="Логотип doozy" />
+    </svg>
+    <span class="fs-2">doozy</span>
+    <h1 class="text-body-emphasis">Войдите в профиль или зарегистрируйтесь</h1>
+    <p class="col-lg-8 mx-auto fs-5 text-muted">
+      Удобное место, где можно хранить свои задачи и планы
+    </p>
+    <div class="d-inline-flex gap-2 mb-5">
+      <a class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" href="{% url 'login' %}" type="button">
+        Войти
+        <svg class="bi ms-2" width="24" height="24"><use xlink:href="#arrow-right-short"></use></svg>
+      </a>
+      <a class="btn btn-outline-secondary btn-lg px-4 rounded-pill" href="{% url 'registration' %}" type="button">
+        Регистрация
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
