@@ -22,7 +22,7 @@
       </li>
       {% if user.is_authenticated %}
         <li class="nav-item">
-          <a href="#" class="nav-link">Прифиль - {{ user.username }}</a>
+          <a href="{% url 'user:user_profile' user.username %}" class="nav-link">Прифиль - {{ user.username }}</a>
         </li>
         <li class="nav-item">
           <a href="{% url 'logout' %}" class="nav-link">Выйти</a>

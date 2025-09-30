@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from tasks.models import User
 
-# Create your views here.
+
+def user_profile(request, username):
+    template_name = 'users/profile.html'
+    user = get_object_or_404(User.objects.all(), username=username)
+    context = {'user': user}
+    return render(request, template_name, context)
