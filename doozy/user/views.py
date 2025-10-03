@@ -17,9 +17,9 @@ def user_profile_edit(request, username):
 
 
 @login_required
-def user_profile_delete(request):
+def user_profile_delete(request, username):
     if request.method == 'POST':
-        user = get_object_or_404(User, username=request.user)
+        user = get_object_or_404(User, username=username)
         logout(request)
         user.delete()
     return redirect('tasks:index')

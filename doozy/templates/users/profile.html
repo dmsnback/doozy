@@ -33,7 +33,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 <form method="post" action="{% url 'user:user_profile_delete' user.username %}">
                   {% csrf_token %}
-                  <button type="button" class="btn btn-primary">Удалить</button>
+                  <button type="submit" class="btn btn-primary">Удалить</button>
                 </form>
               </div>
             </div>
