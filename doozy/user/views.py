@@ -17,12 +17,14 @@ def user_profile(request, username):
 def user_profile_edit(request, username):
     template_name = 'users/profile_edit.html'
     user = get_object_or_404(User, username=username)
-    form = CustomUserCreationForm(request.POST or None, instance=user)
-    context = {'form': form}
-    if form.is_valid():
-        form.save()
-        return redirect('user:user_profile')
-    return render(request, template_name, context)
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST or None, instance=user)
+        if form.is_valid():
+            form.save()
+        return redirect('user:user_profile', username=user.username)
+    else:
+        form = CustomUserCreationForm(instance=user)
+    return render(request, template_name, {'form': form})
 
 
 @login_required

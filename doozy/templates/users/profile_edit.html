@@ -14,7 +14,10 @@
           <form method="post">
             {% csrf_token %}
             {% bootstrap_form form %}
-            {% bootstrap_button button_type='submit' content='Сохранить' %}
+            <button type="submit" class="btn btn-dark">Сохранить</button>
+            <a href="{% url 'user:user_profile' user.username %}" class="btn btn-secondary">Отмена</a>
+            <div>
+            </div>
           </form>
         </div>
       </div>
