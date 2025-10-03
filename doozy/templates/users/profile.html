@@ -9,7 +9,7 @@
 {% block content %}
   <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card text-center p-4" style="max-width: 400px; width: 100%;">
-      <img src="https://via.placeholder.com/120" alt="Avatar" class="rounded-circle mx-auto mb-3" width="120" height="120" />
+      <img src="{% static 'img/placeholder_profile.png' %}" alt="Аватар" class="rounded-circle mx-auto mb-3" width="120" height="120" />
       {% if user.name == None and user.lastname == None %}
         <h5 class="mb-0">Пользователь doozy</h5>
       {% else %}
@@ -18,7 +18,7 @@
       <small class="text-muted">@{{ user.username }}</small>
       <p class="text-muted mb-1">{{ user.email }}</p>
       <div class="d-flex justify-content-center gap-2 mt-3">
-        <a href="#" class="btn btn-dark">Редактировать</a>
+        <a href="{% url 'user:user_profile_edit' user.username %}" class="btn btn-dark">Редактировать</a>
         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <!-- Модальное окно подтверждения удаления -->
