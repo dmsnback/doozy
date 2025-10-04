@@ -16,8 +16,7 @@
             {% bootstrap_form form %}
             <button type="submit" class="btn btn-dark">Сохранить</button>
             <a href="{% url 'user:user_profile' user.username %}" class="btn btn-secondary">Отмена</a>
-            <div>
-            </div>
+            <a href="{% url 'password_change' %}" class="btn btn-outline-danger">Сменить пароль</a>
           </form>
         </div>
       </div>
