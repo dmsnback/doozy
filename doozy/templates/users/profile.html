@@ -10,10 +10,10 @@
   <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card text-center p-4" style="max-width: 400px; width: 100%;">
       <img src="{% static 'img/placeholder_profile.png' %}" alt="Аватар" class="rounded-circle mx-auto mb-3" width="120" height="120" />
-      {% if user.first_name == None and user.last_name == None %}
-        <h5 class="mb-0">Пользователь doozy</h5>
-      {% else %}
+      {% if user.first_name or user.last_name %}
         <h5 class="mb-0">{{ user.first_name }} {{ user.last_name }}</h5>
+      {% else %}
+        <h5 class="mb-0">Пользователь doozy</h5>
       {% endif %}
       <small class="text-muted">@{{ user.username }}</small>
       <p class="text-muted mb-1">{{ user.email }}</p>

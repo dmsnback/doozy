@@ -1,9 +1,26 @@
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic.edit import CreateView
 
 from tasks.models import User
-from user.forms import CustomUserCreationForm
+from user.forms import CustomUserCreationForm, CustomUserEditForm
+
+
+class UserCreateView(CreateView):
+        template_name = 'registration/registration_form.html'
+        model = User
+        form_class = CustomUserCreationForm
+        success_url = '/'
+
+        def form_valid(self, form):
+            valid = super(UserCreateView, self).form_valid(form)
+            new_user = authenticate(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password1')
+            )
+            login(self.request, new_user)
+            return valid
 
 
 def user_profile(request, username):
@@ -18,12 +35,12 @@ def user_profile_edit(request, username):
     template_name = 'users/profile_edit.html'
     user = get_object_or_404(User, username=username)
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST or None, instance=user)
+        form = CustomUserEditForm(request.POST or None, instance=user)
         if form.is_valid():
             form.save()
         return redirect('user:user_profile', username=user.username)
     else:
-        form = CustomUserCreationForm(instance=user)
+        form = CustomUserEditForm(instance=user)
     return render(request, template_name, {'form': form})
 
 
