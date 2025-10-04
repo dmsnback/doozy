@@ -1,37 +1,43 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load django_bootstrap5 %}
 
 {% block title %}
-  <title>Профиль: {{ user.username }} | doozy</title>
+<title>Детали | doozy</title>
 {% endblock %}
 
 {% block content %}
-  <div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card text-center p-4" style="max-width: 400px; width: 100%;">
-      <img src="{% static 'img/placeholder_profile.png' %}" alt="Аватар" class="rounded-circle mx-auto mb-3" width="120" height="120" />
-      {% if user.first_name == None and user.last_name == None %}
-        <h5 class="mb-0">Пользователь doozy</h5>
-      {% else %}
-        <h5 class="mb-0">{{ user.first_name }} {{ user.last_name }}</h5>
+        <h5 class="mb-0">{{ task.title}}</h5>
+      <small class="text-muted">{{ task.comment }}</small>
+      <p class="text-muted mb-1">Статус:
+        {% if task.completed %} Выполнено 
+        {% else %}
+        Не Выполнено
+        {% endif %}
+      </p>
+      <p class="text-muted mb-1">Дата создания: {{ task.created_at }}</p>
+      {% if task.finish_at %}
+      <p class="text-muted mb-1">Выполнить до: {{ task.finish_at }}</p>
+      <p class="text-muted mb-1">Осталось: ###</p>
       {% endif %}
-      <small class="text-muted">@{{ user.username }}</small>
-      <p class="text-muted mb-1">{{ user.email }}</p>
+      {% if task.priority %}
+      <p class="text-muted mb-1">Приоритет: {{ task.priority }}</p>
+      {% endif %}
       <div class="d-flex justify-content-center gap-2 mt-3">
-        <a href="{% url 'user:user_profile_edit' user.username %}" class="btn btn-dark">Редактировать</a>
+        <a href="{% url 'tasks:edit' task.id %}" class="btn btn-dark">Редактировать</a>
         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить</button>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <!-- Модальное окно подтверждения удаления -->
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Вы действительно хотите удалить профиль?</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Удалить задачу?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
-              <div class="modal-body">Все ваши данные и задачи исчезнут безвозвратно!</div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <form method="post" action="{% url 'user:user_profile_delete' user.username %}">
+                <form method="post" action="{% url 'tasks:task_detail_delete' task.id %}">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-outline-danger">Удалить</button>
                 </form>
@@ -42,4 +48,4 @@
       </div>
     </div>
   </div>
-{% endblock %}
+{% endblock content %}

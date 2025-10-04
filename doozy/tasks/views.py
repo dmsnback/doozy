@@ -55,7 +55,17 @@ def task_delete(request, pk):
     if request.method == 'POST':
         instance = get_object_or_404(Task, pk=pk)
         instance.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(
+        request.META.get('HTTP_REFERER', '/')
+    )
+
+
+@login_required
+def task_detail_delete(request, pk):
+    if request.method == 'POST':
+        instance = get_object_or_404(Task, pk=pk)
+        instance.delete()
+    return redirect('tasks:index')
 
 
 @login_required
@@ -68,4 +78,12 @@ def task_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {'page_obj': page_obj}
+    return render(request, template_name, context)
+
+
+@login_required
+def task_detail(request, pk):
+    template_name = 'tasks/task_detail.html'
+    task = get_object_or_404(Task, pk=pk)
+    context = {'task': task}
     return render(request, template_name, context)

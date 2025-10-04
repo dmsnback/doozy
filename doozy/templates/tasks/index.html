@@ -38,7 +38,7 @@
               {% csrf_token %}
               <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить">X</button>
             </form>
-            <a href="#" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Подробнее">➡️</a>
+            <a href="{% url 'tasks:task_detail' task.id %}" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Подробнее">➡️</a>
           </div>
         </li>
         {% endif %}
