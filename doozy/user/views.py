@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
 from tasks.models import User
@@ -51,3 +53,32 @@ def user_profile_delete(request, username):
         logout(request)
         user.delete()
     return redirect('tasks:index')
+
+
+class CustomPasswordReset(PasswordResetView):
+    template_name = "registration/password_reset_form.html"
+    email_template_name = "registration/password_reset_email.html"
+    subject_template_name = "registration/password_reset_subject.txt"
+    success_url = reverse_lazy("passwort_reset_done_link")
+
+    def form_valid(self, form):
+        user_email = form.cleaned_data.get('email')
+        response = super().form_valid(form)
+        return redirect(f"{self.get_success_url()}?email={user_email}")
+
+
+def passwort_reset_done_link(request):
+    template_name = 'registration/password_reset_done.html'
+    user_email = request.GET.get('email', '')
+    email_domain = user_email.split('@')[-1]
+    domain_map = {
+        "yandex.ru": "https://mail.yandex.ru",
+        "gmail.com": "https://mail.google.com",
+        "mail.ru": "https://mail.ru",
+        "bk.ru": "https://mail.ru",
+        "inbox.ru": "https://mail.ru",
+        "list.ru": "https://mail.ru",
+    }
+    mail_link = domain_map.get(email_domain, '#')
+    context = {'mail_link': mail_link}
+    return render(request, template_name, context)
