@@ -13,6 +13,10 @@ class TaskForm(forms.ModelForm):
                 {'cols': '22', 'rows': '5'},
             ),
             'finish_at': forms.DateTimeInput(
-                attrs={'type': 'date'}
+                attrs={
+                    'type': 'datetime-local',
+                    'class': 'form-control form-control-sm border-secondary',
+                    'style': 'max-width: 250px;',
+                },
             )
         }
