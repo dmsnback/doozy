@@ -68,7 +68,6 @@ class Task(models.Model):
         verbose_name='Пользователь'
     )
 
-
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
