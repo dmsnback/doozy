@@ -15,7 +15,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY', default='superpuperkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'pages.apps.PagesConfig',
     'user.apps.UserConfig',
+    'core.apps.CoreConfig',
     'django_bootstrap5',
 ]
 
@@ -135,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # SERVER_EMAIL = EMAIL_HOST_USER
 # EMAIL_ADMIN = EMAIL_HOST_USER
-if not DEBUG:
+if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 else:
@@ -150,3 +151,5 @@ else:
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'tasks:index'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'

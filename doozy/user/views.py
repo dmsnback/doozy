@@ -25,6 +25,7 @@ class UserCreateView(CreateView):
             return valid
 
 
+@login_required
 def user_profile(request, username):
     template_name = 'users/profile.html'
     user = get_object_or_404(User.objects.all(), username=username)
