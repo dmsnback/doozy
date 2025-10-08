@@ -31,6 +31,9 @@
                             <input class="form-check-input me-2" type="checkbox" onchange="this.form.submit()" {% if task.completed %}checked{% endif %}>
                             <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
                               {{ task.title }}
+                              {% if task.time_left and not task.completed %}
+                                <p class="text-muted mb-0">{{task.time_left}}</p>
+                              {% endif %}
                             </span>
                         </form>
                         <div>

@@ -29,8 +29,13 @@
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <form method="post" action="{% url 'tasks:toggle_task' task.id %}" class="d-flex align-items-center">
             {% csrf_token %}
-            <input class="form-check-input me-2" type="checkbox" onchange="this.form.submit()"  {% if task.completed %}checked{% endif %}>
-            <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">{{ task.title }}</span>
+            <input class="form-check-input me-2" type="checkbox" onchange="this.form.submit()"{% if task.completed %}checked{% endif %}>
+            <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
+              {{ task.title }} 
+              {% if task.time_left %}
+                <p class="text-muted mb-0">{{task.time_left}}</p>
+              {% endif %}
+            </span>
           </form>
           <div>
             <a href="{% url 'tasks:edit' task.id %}" class="btn btn-sm btn-outline-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать">✏️</a>

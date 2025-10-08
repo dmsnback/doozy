@@ -16,10 +16,12 @@
         Не Выполнено
         {% endif %}
       </p>
-      <p class="text-muted mb-1">Дата создания: {{ task.created_at }}</p>
+      <p class="text-muted mb-1">Дата создания: {{ task.created_at | date:"d.m.y" }}</p>
       {% if task.finish_at %}
-      <p class="text-muted mb-1">Выполнить до: {{ task.finish_at }}</p>
-      <p class="text-muted mb-1">Осталось: ###</p>
+      <p class="text-muted mb-1">Выполнить до: {{ task.finish_at | date:"d.m.y" }}</p>
+      {% endif %}
+      {% if task.time_left and not task.completed %}
+        <p class="text-muted mb-1">{{task.time_left}}</p>
       {% endif %}
       {% if task.priority %}
       <p class="text-muted mb-1">Приоритет: {{ task.priority }}</p>

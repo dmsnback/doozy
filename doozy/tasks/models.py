@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 
 User = get_user_model()
@@ -67,6 +68,7 @@ class Task(models.Model):
         verbose_name='Пользователь'
     )
 
+
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
@@ -74,3 +76,20 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def time_left(self):
+        now = timezone.now()
+        if self.finish_at:
+            deadline = self.finish_at - now
+            day = deadline.days
+            hour = deadline.seconds // 3600
+            minute = (deadline.seconds % 3600) // 60
+            if deadline.total_seconds() < 0:
+                return 'Просрочено'
+            elif day > 0:
+                return f'Осталось: {day} дн. {hour}ч.'
+            elif hour > 0:
+                return f'Осталось: {hour}ч. {minute} мин.'
+            elif minute > 0:
+                return f'Осталось: {minute}мин.'
+            return 'Осталось: менее часа...'
